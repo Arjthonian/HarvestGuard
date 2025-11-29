@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-type RecognitionInstance = SpeechRecognition | null;
+// FIX: Use `any` so Node/Vercel build doesn't fail
+type RecognitionInstance = any;
 
 export type SpeechStatus = "idle" | "listening" | "error";
 
@@ -17,8 +18,9 @@ export function useBanglaSpeech() {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
     const SpeechRecognitionClass =
-      window.SpeechRecognition || (window as typeof window & { webkitSpeechRecognition?: typeof SpeechRecognition }).webkitSpeechRecognition;
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (!SpeechRecognitionClass) {
       setSupported(false);
@@ -30,13 +32,13 @@ export function useBanglaSpeech() {
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       const value = event.results?.[0]?.[0]?.transcript?.trim() ?? "";
       setTranscript(value);
       resultCallbackRef.current?.(value);
     };
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: any) => {
       setStatus("error");
       setError(event.error);
     };
@@ -49,25 +51,28 @@ export function useBanglaSpeech() {
     setSupported(true);
 
     return () => {
-      recognition.stop();
+      recognition.stop?.();
       recognitionRef.current = null;
     };
   }, []);
 
-  const startListening = useCallback((onResult?: (value: string) => void) => {
-    if (!supported || !recognitionRef.current) {
-      setError("Speech recognition not supported");
-      return;
-    }
-    resultCallbackRef.current = onResult ?? null;
-    setTranscript("");
-    setError(null);
-    recognitionRef.current.start();
-    setStatus("listening");
-  }, [supported]);
+  const startListening = useCallback(
+    (onResult?: (value: string) => void) => {
+      if (!supported || !recognitionRef.current) {
+        setError("Speech recognition not supported");
+        return;
+      }
+      resultCallbackRef.current = onResult ?? null;
+      setTranscript("");
+      setError(null);
+      recognitionRef.current.start();
+      setStatus("listening");
+    },
+    [supported]
+  );
 
   const stopListening = useCallback(() => {
-    recognitionRef.current?.stop();
+    recognitionRef.current?.stop?.();
     setStatus("idle");
   }, []);
 
@@ -85,4 +90,3 @@ export function useBanglaSpeech() {
     resetTranscript,
   };
 }
-
