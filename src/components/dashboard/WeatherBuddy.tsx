@@ -1,6 +1,7 @@
 "use client";
 
 import { useLanguage } from "@/contexts/LanguageContext";
+import { useWeather } from "@/contexts/WeatherContext";
 import { fetchWeatherByLocation, WeatherReport } from "@/lib/weather";
 import { AlertTriangle, CloudRain, Droplets, MapPin, ThermometerSun } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ type LocationState = "idle" | "requesting" | "granted" | "denied" | "error";
 
 export const WeatherBuddy = () => {
   const { dictionary, language } = useLanguage();
+  const { weather, setWeather } = useWeather();
   const [report, setReport] = useState<WeatherReport | null>(null);
   const [loading, setLoading] = useState(true);
   const [locationState, setLocationState] = useState<LocationState>("idle");
@@ -35,6 +37,7 @@ export const WeatherBuddy = () => {
             longitude: position.coords.longitude,
           });
           setReport(data);
+          setWeather(data); // Share weather with other components
         } catch (error) {
           console.error("Failed to fetch weather:", error);
           const errorMsg = error instanceof Error ? error.message : (language === "bn" ? "আবহাওয়া তথ্য লোড করতে ব্যর্থ" : "Failed to load weather data");

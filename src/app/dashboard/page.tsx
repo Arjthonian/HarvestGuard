@@ -1,8 +1,11 @@
 "use client";
 
 import { BatchManager } from "@/components/dashboard/BatchManager";
-import { CropScanner } from "@/components/dashboard/CropScanner";
+import { BanglaVoiceAssistant } from "@/components/dashboard/BanglaVoiceAssistant";
 import { DashboardHero } from "@/components/dashboard/DashboardHero";
+import { PestRAG } from "@/components/dashboard/PestRAG";
+import { RiskMap } from "@/components/dashboard/RiskMapWrapper";
+import { SmartAlert } from "@/components/dashboard/SmartAlert";
 import { WeatherBuddy } from "@/components/dashboard/WeatherBuddy";
 
 export default function DashboardPage() {
@@ -12,7 +15,10 @@ export default function DashboardPage() {
         <DashboardHero />
         <div className="grid gap-8">
           <WeatherBuddy />
-          <CropScanner />
+          <SmartAlert />
+          <RiskMap />
+          <BanglaVoiceAssistant />
+          <PestRAG />
           <BatchManager />
         </div>
       </div>
