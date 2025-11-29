@@ -77,6 +77,7 @@ export type TranslationSections = {
     registerButton: string;
     loginSuccess: string;
     registerSuccess: string;
+    logoutButton: string;
   };
 };
 
@@ -170,6 +171,7 @@ export const translations: TranslationConfig = {
         registerButton: "নিবন্ধন করুন",
         loginSuccess: "সফলভাবে লগইন হয়েছে। ড্যাশবোর্ডে যাচ্ছেন...",
         registerSuccess: "নিবন্ধন সফল। আপনার ইমেইল যাচাই করুন।",
+        logoutButton: "লগআউট",
       },
     },
   },
@@ -254,6 +256,7 @@ export const translations: TranslationConfig = {
         registerButton: "Register",
         loginSuccess: "Login successful. Redirecting to dashboard...",
         registerSuccess: "Registration successful. Please verify your email.",
+        logoutButton: "Logout",
       },
     },
   },
